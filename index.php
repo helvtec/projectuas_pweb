@@ -35,14 +35,21 @@
   <section id="login">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-sm-8">
+        <div class="col-md-12">
           <div class="row">
             <div class="col-sm-3"> </div>
 
             <div class="col-sm-6">
               <div class="card card-login">
+				<div class="header text-center">
+						<h2>Sistem Administrasi Penjualan Buku</h2>				  		
+						<p class="lead">Silahkan masukkan username dan password</p>
+						<hr class="garis">
+						
+				</div>
                 <form class="login-form text-center" action="cek_login.php" method="POST">
-                  <h1 class="mb-5 font-weight-normal text-uppercase">Login Admin</h1>
+
+				  	
                   
                   <?php if (isset($_GET['pesan'])) : ?>
                     <div class="alert alert-danger font-italic" role="alert">
@@ -55,10 +62,15 @@
                   <div class="form-group">
                     <input type="password" name="password" for="password" class="form-control form-control-lg" placeholder="Password" required>
                   </div>
-                  <button type="submit" name="submit" class="btn mt-5 btn-warning btn-custom btn-block text-uppercase rounded-pill btn-lg">
+                  <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block">
                     Login
-                  </button>
-                </form>
+				  </button>
+				  
+				  
+
+				</form>
+				<div class="footer t-3 center">
+				  </div>
               </div>
             </div>
           </div>
@@ -66,5 +78,3 @@
       </div>
     </div>
   </section>
-
-  
