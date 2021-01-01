@@ -2,8 +2,17 @@
 <html lang="en">
 <?php
 session_start();
+// koneksi database
 include 'konfig.php';
+
+// cek login session
 include 'cek.php';
+
+// merubah format uang 
+function rupiah($nilai)
+{
+    return number_format($nilai, 0, ',', '.');
+}
 ?>
 
 <head>
@@ -103,20 +112,32 @@ include 'cek.php';
                                         <tbody>
                                             <?php
 
-                                            // menjalankan query untuk menampilkan semua dataa diurutkan berdasarkan id
-                                            $page = (isset($_GET['page'])) ? (int) $_GET['page'] : 1;
+                                            //jika kita klik cari, maka yang tampil query cari ini
+                                                if (isset($_GET['buku'])) {
 
-                                            // Jumlah data per halaman
-                                            $limit = 5;
+                                                    // menjalankan query untuk menampilkan semua dataa diurutkan berdasarkan id
+                                                    $page = (isset($_GET['page'])) ? (int) $_GET['page'] : 1;
 
-                                            $limitStart = ($page - 1) * $limit;
+                                                    // Jumlah data per halaman
+                                                    $limit = 5;
 
-                                            $result = mysqli_query($koneksi, "SELECT * FROM buku LIMIT " . $limitStart . "," . $limit);
+                                                    $limitStart = ($page - 1) * $limit;
+                                                    
+                                                    // inisialisasi untuk mengurutkan data.
+                                                    $no = $limitStart + 1;
+                                                } else {
+                                                    // menjalankan query untuk menampilkan semua dataa diurutkan berdasarkan id
+                                                    $page = (isset($_GET['page'])) ? (int) $_GET['page'] : 1;
 
-                                            $no = $limitStart + 1;
+                                                    // Jumlah data per halaman
+                                                    $limit = 5;
 
-                                            // inisialisasi untuk mengurutkan data.
-                                            $nodata = 1;
+                                                    $limitStart = ($page - 1) * $limit;
+
+                                                    $result = mysqli_query($koneksi, "SELECT * FROM buku LIMIT " . $limitStart . "," . $limit);
+                                                    // inisialisasi untuk mengurutkan data.
+                                                    $no = $limitStart + 1;
+                                                }
 
                                             // hasil query disimpan dalam bentuk array
                                             // melakukan looping untuk mencetak data.
