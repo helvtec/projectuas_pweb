@@ -1,13 +1,23 @@
 <!doctype html>
 <html lang="en">
-	
-<?php 
-	session_start();
-	include 'konfig.php';
-	include 'cek.php';
+<?php
+session_start();
+// koneksi database
+include 'konfig.php';
+
+// cek login session
+include 'cek.php';
+
+// merubah format uang 
+function rupiah($nilai)
+{
+	return number_format($nilai, 0, ',', '.');
+}
 ?>
+
+
 <head>
-	<title>Tables | Klorofil - Free Bootstrap Dashboard Template</title>
+	<title>Admin | Sistem Administrasi Penjualan Buku</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -17,8 +27,6 @@
 	<link rel="stylesheet" href="../assets/vendor/linearicons/style.css">
 	<!-- MAIN CSS -->
 	<link rel="stylesheet" href="../assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="assets/css/demo.css">
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<!-- ICONS -->
@@ -32,7 +40,7 @@
 		<!-- NAVBAR -->
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="brand">
-				<a href="index.html"><img src="../assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+				<a href="index.html"><img src="../assets/img/sunbook-logo.png" alt="Logo" class="img-responsive logo"></a>
 			</div>
 			<div class="container-fluid">
 				<div class="navbar-btn">
@@ -42,7 +50,7 @@
 				<div id="navbar-menu">
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.png" class="img-circle" alt="Avatar"> <span><?php echo $_SESSION['nama']  ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.svg" class="img-circle" alt="Avatar"> <span><?php echo $_SESSION['nama']  ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
 								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
@@ -50,41 +58,61 @@
 								<li><a href="logout.php"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
 							</ul>
 						</li>
-						<!-- <li>
-							<a class="update-pro" href="https://www.themeineed.com/downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
-						</li> -->
 					</ul>
 				</div>
 			</div>
 		</nav>
 		<!-- END NAVBAR -->
+
 		<!-- LEFT SIDEBAR -->
 		<div id="sidebar-nav" class="sidebar">
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav">
-						<li><a href="index.html" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-						<li><a href="buku.php" class=""><i class="lnr lnr-file-empty"></i> <span>Buku</span></a></li>
-						<li><a href="transaksi.php" class=""><i class="lnr lnr-file-empty"></i> <span>Transaksi</span></a></li>
+						<li><a href="admin/index.html" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+						<li><a href="buku.php" class=""><i class="lnr lnr-book"></i> <span>Buku</span></a></li>
+						<li><a href="transaksi.php" class=""><i class="lnr lnr-cart"></i> <span>Transaksi</span></a></li>
 						<li><a href="logout.php" class=""><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
 					</ul>
 				</nav>
 			</div>
 		</div>
 		<!-- END LEFT SIDEBAR -->
+
 		<!-- MAIN -->
 		<div class="main">
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
 
-
+				<div class="panel panel-headline">
+				
 					<div class="panel panel-headline">
+
+						
+
 						<div class="panel-heading">
 							<h3 class="panel-title">Penjualan Buku</h3>
 							<p class="panel-subtitle"></p>
 						</div>
 						<div class="panel-body">
+							<div class="row">
+							<?php
+								$query = "SELECT COUNT(ID) AS total_buku FROM buku; ";
+								$result = mysqli_query($koneksi, $query);
+								while ($row = mysqli_fetch_array($result)) {
+								?>
+									<div class="col-md-4">
+										<div class="metric">
+											<span class="icon"><i class="fa fa-book"></i></span>
+											<p>
+												<span class="number"><?php echo rupiah($row['total_buku']) ?></span>
+												<span class="title">Total Buku Saat ini</span>
+											</p>
+										</div>
+									</div>
+								<?php } ?>
+							</div>
 							<div class="row">
 								<?php
 								$query = "SELECT SUM(total) as total from head_transaksi";
@@ -101,7 +129,41 @@
 										</p>
 									</div>
 								</div>
-								
+									<?php } ?>
+
+									<?php
+									$query = "SELECT SUM(jumlah_beli) as total from detail_transaksi";
+									$result = mysqli_query($koneksi, $query);
+
+									while ($row = mysqli_fetch_array($result)) {
+									?>
+										<div class="col-md-4">
+											<div class="metric">
+												<span class="icon"><i class="fa fa-shopping-bag"></i></span>
+												<p>
+													<span class="number"><?php echo rupiah($row['total']) ?></span>
+													<span class="title">Item Terjual</span>
+												</p>
+											</div>
+										</div>
+									<?php } ?>
+									
+									<?php
+									$query = "SELECT COUNT(*) as total from head_transaksi";
+									$result = mysqli_query($koneksi, $query);
+									while ($row = mysqli_fetch_array($result)) {
+									?>
+										<div class="col-md-4">
+											<div class="metric">
+												<span class="icon"><i class="fa fa-bar-chart"></i></span>
+												<p>
+													<span class="number"><?php echo rupiah($row['total']) ?></span>
+													<span class="title">Total Transaksi</span>
+												</p>
+											</div>
+										</div>
+									<?php } ?>
+								</div>
 							</div>
 						</div>
 					</div>
