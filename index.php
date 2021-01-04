@@ -69,8 +69,7 @@
 				  
 
 				</form>
-				<div class="footer t-3 center">
-				  </div>
+				
               </div>
             </div>
           </div>
