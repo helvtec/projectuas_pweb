@@ -2,18 +2,21 @@
 <html lang="en">
 <?php
 session_start();
+// koneksi database
 include 'konfig.php';
+
+// cek login session
 include 'cek.php';
 
-function format_ribuan($nilai)
+// merubah format uang 
+function rupiah($nilai)
 {
-	return number_format($nilai, 0, ',', '.');
+    return number_format($nilai, 0, ',', '.');
 }
-
 ?>
 
 <head>
-	<title>Tables | Klorofil - Free Bootstrap Dashboard Template</title>
+<title>Admin | Sistem Administrasi Penjualan Buku</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -23,8 +26,7 @@ function format_ribuan($nilai)
 	<link rel="stylesheet" href="../assets/vendor/linearicons/style.css">
 	<!-- MAIN CSS -->
 	<link rel="stylesheet" href="../assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<!-- <link rel="stylesheet" href="assets/css/demo.css"> -->
+
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<!-- ICONS -->
@@ -40,7 +42,7 @@ function format_ribuan($nilai)
 		<!-- NAVBAR -->
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="brand">
-				<a href="index.php"><img src="../assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+				<a href="index.html"><img src="../assets/img/sunbook-logo.png" alt="Logo" class="img-responsive logo"></a>
 			</div>
 			<div class="container-fluid">
 				<div class="navbar-btn">
@@ -50,7 +52,7 @@ function format_ribuan($nilai)
 				<div id="navbar-menu">
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.png" class="img-circle" alt="Avatar"> <span><?php echo $_SESSION['nama']  ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.svg" class="img-circle" alt="Avatar"> <span><?php echo $_SESSION['nama']  ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
 								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
@@ -87,8 +89,9 @@ function format_ribuan($nilai)
 					<div class="row">
 						<div class="col-md-12">
 							<!-- TABEL -->
-							<div class="panel">
 
+							<div class="panel">
+								
 								<div class="panel-heading">
 									<h3 class="panel-title">Silahkan isi data</h3>
 								</div>
@@ -119,6 +122,7 @@ function format_ribuan($nilai)
 										<div class="form-group col-lg-6">
 											<label>Judul Buku</label>
 											<select class="form-control" name="id_buku" onchange="changeValue(this.value)">
+											<option value="0">-- Pilih --</option>
 												<?php
 												//Perintah sql untuk menampilkan semua data pada tabel jdul
 												$queryJudul = "select * from buku ORDER BY judul asc";
@@ -130,7 +134,7 @@ function format_ribuan($nilai)
 													$nomorJudul++;
 													$jsArray .= "dataBuku['" . $data['ID'] . "'] = {pengarang:'" . addslashes($data['pengarang']) . "',penerbit:'" . addslashes($data['penerbit']) . "',harga:'" . addslashes($data['harga']) . "',ID:'" . addslashes($data['ID']) . "'};\n";
 												?>
-													<option value="<?php echo $data['ID']; ?>"><?php echo $data['judul']; ?></option>
+													<option value="<?php echo $data['ID']; ?>"> <?php echo $data['judul']; ?></option>
 												<?php
 												}
 												?>
@@ -186,7 +190,7 @@ function format_ribuan($nilai)
 										<!-- akhir Inputan -->
 
 										<div class="form-group col-lg-12">
-											<button id="tambah" type="submit" class="btn btn-dark btn-lg">Tambah</button>
+											<button id="tambah" type="submit" class="btn btn-dark btn-lg"><i class="fa fa-plus"></i> Tambah</button>
 										</div>
 
 										<div class="panel">
@@ -200,37 +204,55 @@ function format_ribuan($nilai)
 													</tr>
 												</thead>
 												<?php
-												$queryData = "SELECT detail_transaksi.ID_buku as id, buku.judul as dataBuku, detail_transaksi.jumlah_beli as dataQty, detail_transaksi.subtotal as dataSubtotal from detail_transaksi INNER JOIN buku on detail_transaksi.ID_buku = buku.ID WHERE no_transaksi='$noTransaksi' ";
+												$queryData = "SELECT detail_transaksi.ID_buku as id, 
+												buku.judul as dataBuku, 
+												detail_transaksi.jumlah_beli as dataQty, 
+												detail_transaksi.subtotal as dataSubtotal from detail_transaksi INNER JOIN buku on 
+												detail_transaksi.ID_buku = buku.ID WHERE no_transaksi='$noTransaksi' ";
+
 												$resultData = mysqli_query($koneksi, $queryData);
-												while ($barisTabel = mysqli_fetch_array($resultData)) { 
+												while ($baris = mysqli_fetch_array($resultData)) { 
 													
 												?>
 
 													<tbody>
 														<tr>
-															<td><?php echo $barisTabel['dataBuku']; ?></td>
-															<td><?php echo $barisTabel['dataQty']; ?></td>
-															<td><?php echo $barisTabel['dataSubtotal']; ?></td>
+															<td><?php echo $baris['dataBuku']; ?></td>
+															<td><?php echo $baris['dataQty']; ?></td>
+															<td><?php echo $baris['dataSubtotal']; ?></td>
 															<td style="width: 70px; text-align:center;">
-																<a id="hps" class="btn btn-danger" href="proses_hapus_beli.php?id=<?php echo $barisTabel['id']; ?>" 
-																onclick="return confirm('Anda yakin membatalkan pembelian <?php echo $barisTabel['id']; ?>?')">Batal</a>
+																<a id="hps" class="btn btn-danger" href="proses_hapus_beli.php?id=<?php echo $baris['id']; ?>" 
+																onclick="return confirm('Anda yakin membatalkan pembelian <?php echo $baris['id']; ?>?')">Batal</a>
 															</td>
 														</tr>
-														</tbody>
+													</tbody>
 												<?php } ?>
 												
 											</table>
 										</div>
-										<div class="row" style="margin:15px;">
 
-											<div class="form-group col-lg-8 col-md-8">
+										<div class="row" style="margin:15px;">
+											<div class="form-group col-lg-6 col-md-8">
 												<button id="simpan" type="submit" class="btn btn-primary btn-lg btn-block">Simpan</button>
 											</div>
-											<!-- <div class="form-group col-lg-4 col-md-4 text-center">
-												<div class="form-group">
-													<input class="form-control" type="text" name="total" placeholder="total" readonly>
 
-												</div> -->
+											<?php 
+												$query = "SELECT sum(subtotal) as subtotal from detail_transaksi where no_transaksi = '$noTransaksi'";
+
+												$result = mysqli_query($koneksi, $query);
+												while ($row = mysqli_fetch_array($result)) { 
+											?>
+
+											<div class="form-group col-lg-6 col-md-6 text-center">
+												<table width="100%">
+													<td><button class="left btn btn-light">Total</button></td>
+													<td><input type="text" class="form-control text-center" name="total" 
+															placeholder="Total" value="<?php echo $row['subtotal']?>" readonly></td>
+												</table>
+											</div>
+											<?php } ?>
+
+												</div>
 											</div>
 										</div>
 									</form>
