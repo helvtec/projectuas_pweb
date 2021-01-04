@@ -16,7 +16,7 @@ function rupiah($nilai)
 ?>
 
 <head>
-    <title>Tables | Klorofil - Free Bootstrap Dashboard Template</title>
+<title>Admin | Sistem Administrasi Penjualan Buku</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -26,8 +26,6 @@ function rupiah($nilai)
     <link rel="stylesheet" href="../assets/vendor/linearicons/style.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="../assets/css/main.css">
-    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-    <link rel="stylesheet" href="assets/css/demo.css">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
     <!-- ICONS -->
@@ -41,7 +39,7 @@ function rupiah($nilai)
         <!-- NAVBAR -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="brand">
-                <a href="index.html"><img src="../assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+                <a href="index.html"><img src="../assets/img/sunbook-logo.png" alt="Logo" class="img-responsive logo"></a>
             </div>
             <div class="container-fluid">
                 <div class="navbar-btn">
@@ -51,7 +49,7 @@ function rupiah($nilai)
                 <div id="navbar-menu">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.png" class="img-circle" alt="Avatar"> <span><?php echo $_SESSION['nama']  ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.svg" class="img-circle" alt="Avatar"> <span><?php echo $_SESSION['nama']  ?></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
                                 <li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
@@ -73,8 +71,8 @@ function rupiah($nilai)
                 <nav>
                     <ul class="nav">
                         <li><a href="index.php" class=""><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-                        <li><a href="buku.php" class=""><i class="lnr lnr-file-empty"></i> <span>Buku</span></a></li>
-                        <li><a href="transaksi.php" class=""><i class="lnr lnr-file-empty"></i> <span>Transaksi</span></a></li>
+						<li><a href="buku.php" class=""><i class="lnr lnr-book"></i> <span>Buku</span></a></li>
+						<li><a href="transaksi.php" class=""><i class="lnr lnr-cart"></i> <span>Transaksi</span></a></li>
                         <li><a href="logout.php" class=""><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
                     </ul>
                 </nav>
@@ -92,9 +90,12 @@ function rupiah($nilai)
                             <!-- TABLE HOVER -->
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <a class="text-left" href="tambah_buku.php">
-                                        <h3 class="panel-title">Tambah Buku</h3>
-                                    </a>
+                                    <div class="col-md-6 col-12" style="margin-left:-15px;  padding-bottom:10px;">
+                                        <a class="text-left btn btn-primary" href="tambah_buku.php">
+                                            <h3 class="panel-title"><i class="fa fa-plus-circle"></i> Tambah Buku</h3>
+                                        </a>
+
+                                    </div>
                                 
                                 </div>
                                 <div class="panel-body">
@@ -111,8 +112,7 @@ function rupiah($nilai)
                                         </thead>
                                         <tbody>
                                             <?php
-
-                                            //jika kita klik cari, maka yang tampil query cari ini
+                                                //jika kita klik cari, maka yang tampil query cari ini
                                                 if (isset($_GET['buku'])) {
 
                                                     // menjalankan query untuk menampilkan semua dataa diurutkan berdasarkan id
@@ -146,10 +146,10 @@ function rupiah($nilai)
                                             ?>
 
                                                 <tr>
-                                                    <td><?php echo $nodata; ?></td>
+                                                    <td><?php echo $no; ?></td>
                                                     <td><?php echo $row['judul']; ?></td>
                                                     <td><?php echo $row['tahun_terbit']; ?></td>
-                                                    <td><?php echo $row['harga']; ?></td>
+                                                    <td><?php echo "Rp. " . $row['harga']; ?></td>
                                                     <td style="text-align: center;"><img src="../gambar/buku/<?php echo $row['gambar']; ?>" style="width: 120px;"></td>
                                                     
                                                     <td>
@@ -159,7 +159,7 @@ function rupiah($nilai)
                                                 </tr>
 
                                             <?php
-                                                $nodata++;
+                                                $no++;
                                             }
                                             ?>
                                         </tbody>
