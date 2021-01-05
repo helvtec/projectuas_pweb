@@ -1,0 +1,26 @@
+Sistem Administrasi Penjualan Buku
+
+Dapat digunakan untuk mempermudah pelaku bisnis dalam mengatur data penjualan.
+
+Dibuat dengan :
+- PHP
+- MySQL
+- Jquery
+- JavaScript
+- Bootstrap 4
+- Template by Bootstrap
+
+Fitur
+
+Dashboard 
+- Memberikan informasi data buku dan transaksi penjualan
+
+Kelola data buku
+- Melakukan penambahan data buku
+- Merubah data buku
+- Menghapus data buku
+
+Kelola Transaksi
+- dpt Melakukan penambahan data transaksi
+- dpt menambahkan beberapa produk buku sekali transaksi
+
