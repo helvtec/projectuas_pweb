@@ -2,19 +2,15 @@
 <html lang="en">
 <?php
 session_start();
-// koneksi database
 include 'konfig.php';
-
-// cek login session
 include 'cek.php';
 
-// merubah format uang 
 function rupiah($nilai)
 {
-    return number_format($nilai, 0, ',', '.');
+	return number_format($nilai, 0, ',', '.');
 }
-?>
 
+?>
 
 <title>Admin | Sistem Administrasi Penjualan Buku</title>
     <meta charset="utf-8">
@@ -280,7 +276,18 @@ function rupiah($nilai)
 			});
 		});
 	</script>
-	
+	<!-- validasi angka -->
+    <!-- <script>
+        function hanyaAngka(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                alert("Hanya diisi oleh Angka!");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script> -->
 </body>
 
 </html>

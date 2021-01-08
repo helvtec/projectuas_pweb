@@ -2,7 +2,7 @@
 include 'konfig.php';
 $id = $_GET["id"];
 
-$query = "DELETE from detail_transaksi where ID='$id'";
+$query = "delete from detail_transaksi where ID='$id'";
 $result = mysqli_query($koneksi, $query);
 
 if(!$result){

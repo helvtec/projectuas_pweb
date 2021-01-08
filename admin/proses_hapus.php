@@ -2,7 +2,7 @@
 include 'konfig.php';
 $id = $_GET["id"];
 
-$query = "DELETE from buku where ID='$id'";
+$query = "delete from buku where ID='$id'";
 $result = mysqli_query($koneksi, $query);
 
 if(!$result){
