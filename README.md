@@ -1,2 +1,2 @@
 # projectuas_pweb
-Project UAS - Pemograman WEB (Semester 3)
+Project UAS - Mata kuliah Pemograman WEB (Semester 3)
